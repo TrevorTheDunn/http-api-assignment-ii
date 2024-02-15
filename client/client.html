@@ -49,11 +49,33 @@
       });
 
       handleResponse(response, method === 'get');
-    }
+    };
+
+    const sendPost = async (nameForm) => {
+      const nameAction = nameForm.getAttribute('action');
+      const nameMethod = nameForm.getAttribute('method');
+
+      const nameField = nameForm.querySelector('#nameField');
+      const ageField = nameForm.querySelector('#ageField');
+
+      const formData = `name=${nameField.value}&age=${ageField.value}`;
+
+      let response = await fetch(nameAction, {
+        method: nameMethod,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
+        body: formData,
+      });
+
+      handleResponse(response, nameMethod);
+    };
 
     // Init function is called when window.onload runs (set below).
     const init = () => {
       const userForm = document.querySelector('#userForm');
+      const nameForm = document.querySelector('#nameForm');
 
       const getUsers = (e) => {
         e.preventDefault();
@@ -61,7 +83,14 @@
         return false;
       }
 
+      const addUser = (e) => {
+        e.preventDefault();
+        sendPost(nameForm);
+        return false;
+      }
+
       userForm.addEventListener('submit', getUsers);
+      nameForm.addEventListener('submit', addUser);
     };
 
     // When the window loads, run init.

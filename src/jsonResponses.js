@@ -50,13 +50,41 @@ const notFound = (request, response) => {
     };
 
     return respondJSON(request, response, 404, responseJSON);
-}
+};
 
 
 const notFoundMeta = (request, response) => {
     respondJSONMeta(request, response, 404);
-}
+};
 
+const addUser = (request, response, body) => {
+    const responseJSON = {
+        message: 'Name and age are both required.',
+    };
+
+    if (!body.name || !body.age) {
+        responseJSON.id = 'missingParams';
+        return respondJSON(request, response, 400, responseJSON);
+    }
+
+    let responseCode = 204;
+
+    if (!users[body.name]) {
+        responseCode = 201;
+        users[body.name] = {};
+    }
+
+    users[body.name].name = body.name;
+    users[body.name].age = body.age;
+
+    if (responseCode === 201) {
+        responseJSON.message = 'Created Successfully';
+        return respondJSON(request, response, responseCode, responseJSON);
+    }
+
+
+    return respondJSONMeta(request, response, responseCode);
+}
 
 module.exports = {
     getUsers,
@@ -64,4 +92,5 @@ module.exports = {
     updateUser,
     notFound,
     notFoundMeta,
+    addUser,
 };
