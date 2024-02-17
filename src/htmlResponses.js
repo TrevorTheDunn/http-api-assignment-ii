@@ -5,20 +5,20 @@ const css = fs.readFileSync(`${__dirname}/../client/style.css`);
 
 // function to get the index page
 const getIndex = (request, response) => {
-    response.writeHead(200, { 'Content-Type': 'text/html' });
-    response.write(index);
-    response.end();
+  response.writeHead(200, { 'Content-Type': 'text/html' });
+  response.write(index);
+  response.end();
 };
 
 // function to get css page
 const getCSS = (request, response) => {
-    response.writeHead(200, { 'Content-Type': 'text/css' });
-    response.write(css);
-    response.end();
+  response.writeHead(200, { 'Content-Type': 'text/css' });
+  response.write(css);
+  response.end();
 };
 
 // set our public exports
 module.exports = {
-    getIndex,
-    getCSS,
+  getIndex,
+  getCSS,
 };

@@ -16,24 +16,29 @@
         case 201:
           content.innerHTML = `<b>Created</b>`;
           break;
+        case 204:
+          content.innerHTML = `<b>Updated (No Content)</b>`;
+          parseResponse = false;
+          break;
         case 400:
           content.innerHTML = `<b>Bad Request</b>`;
           break;
         case 404:
-          content.innerHTML = `<b>Resource Not Found</b>`;
+          content.innerHTML = `<b>Not Found</b>`;
           break;
         default:
           content.innerHTML = `Error code not implemented by client.`;
           break;
       }
-
       if(parseResponse) {
+        console.log(response);
         let obj = await response.json();
-
-        let jsonString = JSON.stringify(obj.users);
-        content.innerHTML += `<p>${jsonString}</p>`;
-      } else {
-        content.innerHTML += `<p>Meta Data Received</p>`;
+        if(obj.message) {
+          content.innerHTML += `<p>Message: ${obj.message}</p>`;
+        } else {
+          let jsonString = JSON.stringify(obj.users);
+          content.innerHTML += `<p>${jsonString}</p>`;
+        }
       }
     };
 
@@ -69,7 +74,7 @@
         body: formData,
       });
 
-      handleResponse(response, nameMethod);
+      handleResponse(response, nameMethod === 'post');
     };
 
     // Init function is called when window.onload runs (set below).
